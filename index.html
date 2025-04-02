@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <title>Рыбалка: Тяглино, Черново, Сяберо</title>
+    <style>
+        /* Общие стили */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0 0 50px 0;
+            background-color: #f0f4f8;
+            color: #333;
+        }
+
+        /* Шапка */
+        header {
+            background-color: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 15px;
+            position: relative;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.3em;
+        }
+
+        .datetime {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 1.7em;
+            background-color: rgba(32, 207, 99, 0.2);
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        nav li {
+            margin: 0 15px;
+        }
+
+        nav a {
+            color: #ecf0f1;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        nav a:hover {
+            color: #3498db;
+        }
+
+        /* Секции */
+        section {
+            max-width: 1500px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+
+        /* Три колонки */
+        .columns {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .column {
+            flex: 1;
+            background-color: rgb(225, 247, 196);
+            padding: 15px;
+            border-radius: 52px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            color: #054a8f;
+            text-align: center;
+        }
+
+        h3 {
+            color: #dd0808;
+            margin-top: 0;
+            text-align: center;
+            font-size: 35px;
+        }
+
+        .place-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
+            display: block;
+            margin: 10px 0;
+        }
+
+        .weather {
+            margin-top: 15px;
+        }
+
+        .weather h4 {
+            color: #34495e;
+            margin: 10px 0 5px;
+        }
+
+        .weather span {
+            font-weight: bold;
+            color: #e74c3c;
+        }
+
+        /* Расписание автобусов */
+        .bus-image {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 10px auto;
+            border-radius: 5px;
+        }
+
+        /* Календарь */
+        #calendar ul {
+            padding-left: 20px;
+        }
+
+        /* Подвал */
+        footer {
+            font-size: 14px;
+            text-align: center;
+            padding: 1px;
+            background-color: #2c3e50;
+            color: white;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+
+        /* Стили для расписания автобусов */
+        .bus-schedule {
+            display: flex;
+            justify-content: center;
+            gap: 50px;
+            margin: 20px 0;
+        }
+
+        .time-list {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .time-item {
+            font-size: 35px;
+            margin: 5px 0;
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: center;
+            background-color: white;
+            border-radius: 5px;
+            min-width: 120px;
+        }
+
+        .next-buses-container {
+            margin-top: 20px;
+            background-color: #e1f7c4;
+            border-radius: 10px;
+            padding: 15px;
+        }
+
+        .next-bus {
+            font-size: 24px;
+            color: #054a8f;
+            font-weight: bold;
+            text-align: center;
+            margin: 10px 0;
+            padding: 10px;
+            background-color: white;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+
+        .direction-title {
+            font-size: 30px;
+            text-align: center;
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .highlight {
+            background-color: #ffeb3b;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <!-- Шапка сайта -->
+    <header>
+        <div class="datetime" id="current-datetime"></div>
+        <h1>Рыбалка в Тяглино, Черново и Сяберо</h1>
+    </header>
+
+    <!-- Основной контент -->
+    <main>
+        <!-- Секция с тремя колонками -->
+        <section id="places" class="columns">
+            <div class="column" id="tyaglino">
+                <h3>Черново</h3>
+                <p style="font-size:30px; text-align: center;">Расписание 540 автобуса</p>
+                
+                <div class="bus-schedule">
+                    <div>
+                        <div class="direction-title">На Учхоз</div>
+                        <ul class="time-list" id="list1"></ul>
+                    </div>
+                    <div>
+                        <div class="direction-title">На Войсковицы</div>
+                        <ul class="time-list" id="list2"></ul>
+                    </div>
+                </div>
+                
+                <!-- Ближайшие автобусы -->
+                <div class="next-buses-container" id="next-buses-info"></div>
+            </div>
+            <div class="column" id="tyaglino">
+                <h3>Тяглино</h3>
+                <p style="font-size:30px; text-align: center;"> Погода</p>
+                <div id="_MI_e4742014fcacdef45be873b037cb4dee"><a href="https://ru.meteotrend.com/">Прогноз погоды</a></div> <script type='text/javascript'>(function(d,w,t,k){function l(){if(typeof(w._MIOB_)=='undefined'){w._MIOB_={};}var m=w._MIOB_[t]=k;var s=d.createElement('script');m.p=('https:'==d.location.protocol?'https:':'http:');s.type='text/javascript';s.async=true;s.src=m.p+'//info.meteotrend.com/mt/'+m.t+'.js';d.body.appendChild(s);}if(d.readyState=='complete')l();else{if(w.attachEvent)w.attachEvent('onload',l);else w.addEventListener('load',l,false);}})(document,window,'e4742014fcacdef45be873b037cb4dee',{t:'full5d',css:['{p}//info.meteotrend.com/mt/{t}.css','{p}//info.meteotrend.com/cs/04a7feaed88270d9fe7bd038d165f64931fcf838.css'],source:'meteotrend'});</script>
+            </div>
+            <div class="column" id="syabero">
+                <h3>Сяберо</h3>
+                <p style="font-size:30px; text-align: center;"> Погода в Осьмино</p>
+                <div id="_MI_fe521a0233c3db44c96cb075d558eb89"><a href="https://ru.meteotrend.com/">Погода</a></div> <script type='text/javascript'>(function(d,w,t,k){function l(){if(typeof(w._MIOB_)=='undefined'){w._MIOB_={};}var m=w._MIOB_[t]=k;var s=d.createElement('script');m.p=('https:'==d.location.protocol?'https:':'http:');s.type='text/javascript';s.async=true;s.src=m.p+'//info.meteotrend.com/mt/'+m.t+'.js';d.body.appendChild(s);}if(d.readyState=='complete')l();else{if(w.attachEvent)w.attachEvent('onload',l);else w.addEventListener('load',l,false);}})(document,window,'fe521a0233c3db44c96cb075d558eb89',{t:'full5d',css:['{p}//info.meteotrend.com/mt/{t}.css','{p}//info.meteotrend.com/cs/b0b3758a56fe362fa74dce2869e3dad341139f15.css'],source:'meteotrend'});</script>
+                </div>
+            </div>
+        </section>
+
+        <!-- Расписание автобусов -->
+        <section id="bus">
+            <h2>Расписание автобусов</h2>
+            <img src="bus_schedule.jpg" alt="Расписание автобусов" class="bus-image">
+        </section>
+
+        <!-- Рыбацкий календарь -->
+        <section id="calendar">
+            <h2>Рыбацкий календарь</h2>
+            <ul>
+                <li><strong>Щука</strong>: 5-10 апреля — активный клёв.</li>
+                <li><strong>Окунь</strong>: 12-15 апреля — хороший улов.</li>
+                <li><strong>Лещ</strong>: 20-25 апреля — идеальные дни.</li>
+                <li><strong>Судак</strong>: 8-12 апреля — средняя активность.</li>
+                <li><strong>Плотва</strong>: весь апрель — стабильный клёв.</li>
+            </ul>
+        </section>
+    </main>
+
+    <!-- Подвал -->
+    <footer>
+        <p>© 2025 Рыбалка для всех</p>
+    </footer>
+
+    <script>
+        // Расписания автобусов
+        const scheduleToUchhoz = ["10:26", "12:24", "14:09", "15:51", "18:04"];
+        const scheduleToVoiskovitsy = ["12:45", "14:25", "16:05", "18:20", "19:45"];
+        
+        // Функция для преобразования времени в минуты
+        function timeToMinutes(time) {
+            const [hours, minutes] = time.split(':').map(Number);
+            return hours * 60 + minutes;
+        }
+        
+        // Функция для преобразования минут в часы и минуты
+        function minutesToHoursMinutes(totalMinutes) {
+            const hours = Math.floor(totalMinutes / 60);
+            const minutes = totalMinutes % 60;
+            
+            if (hours === 0) return `${minutes} мин.`;
+            if (minutes === 0) return `${hours} ч.`;
+            return `${hours} ч. ${minutes} мин.`;
+        }
+        
+        // Функция для поиска ближайшего автобуса
+        function findNextBus(schedule, currentTime) {
+            const currentMinutes = timeToMinutes(currentTime);
+            let nextBus = null;
+            let nextBusIndex = -1;
+            let minDiff = Infinity;
+            
+            for (let i = 0; i < schedule.length; i++) {
+                const time = schedule[i];
+                const busMinutes = timeToMinutes(time);
+                let diff = busMinutes - currentMinutes;
+                
+                // Если автобус уже ушел сегодня, смотрим на следующий день
+                if (diff < 0) diff += 24 * 60;
+                
+                if (diff < minDiff) {
+                    minDiff = diff;
+                    nextBus = time;
+                    nextBusIndex = i;
+                }
+            }
+            
+            return {
+                time: nextBus,
+                minutesUntil: minDiff,
+                index: nextBusIndex
+            };
+        }
+        
+        // Функция для обновления информации о ближайших автобусах
+        function updateNextBusesInfo() {
+            const now = new Date();
+            const currentTime = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
+            
+            const nextToUchhoz = findNextBus(scheduleToUchhoz, currentTime);
+            const nextToVoiskovitsy = findNextBus(scheduleToVoiskovitsy, currentTime);
+            
+            const infoContainer = document.getElementById('next-buses-info');
+            
+            let infoHTML = `
+                <h4 style="text-align: center; margin-top: 0;">Ближайшие автобусы</h4>
+                <div class="next-bus">
+                    На Учхоз: ${nextToUchhoz.time} (через ${minutesToHoursMinutes(nextToUchhoz.minutesUntil)})
+                </div>
+                <div class="next-bus">
+                    На Войсковицы: ${nextToVoiskovitsy.time} (через ${minutesToHoursMinutes(nextToVoiskovitsy.minutesUntil)})
+                </div>
+            `;
+            
+            infoContainer.innerHTML = infoHTML;
+            
+            // Подсвечиваем ближайшие автобусы в расписании
+            highlightNextBuses(nextToUchhoz.index, nextToVoiskovitsy.index);
+        }
+        
+        // Функция для подсветки ближайших автобусов в расписании
+        function highlightNextBuses(uchhozIndex, voiskovitsyIndex) {
+            const uchhozItems = document.querySelectorAll('#list1 .time-item');
+            const voiskovitsyItems = document.querySelectorAll('#list2 .time-item');
+            
+            // Снимаем подсветку со всех элементов
+            uchhozItems.forEach(item => item.classList.remove('highlight'));
+            voiskovitsyItems.forEach(item => item.classList.remove('highlight'));
+            
+            // Подсвечиваем ближайшие
+            if (uchhozIndex >= 0 && uchhozIndex < uchhozItems.length) {
+                uchhozItems[uchhozIndex].classList.add('highlight');
+            }
+            if (voiskovitsyIndex >= 0 && voiskovitsyIndex < voiskovitsyItems.length) {
+                voiskovitsyItems[voiskovitsyIndex].classList.add('highlight');
+            }
+        }
+        
+        // Функция для отображения расписания
+        function displaySchedule() {
+            const list1 = document.getElementById("list1");
+            const list2 = document.getElementById("list2");
+            
+            // Очищаем списки
+            list1.innerHTML = '';
+            list2.innerHTML = '';
+            
+            // Заполняем список на Учхоз
+            scheduleToUchhoz.forEach(time => {
+                const li = document.createElement("li");
+                li.className = "time-item";
+                li.textContent = time;
+                list1.appendChild(li);
+            });
+            
+            // Заполняем список на Войсковицы
+            scheduleToVoiskovitsy.forEach(time => {
+                const li = document.createElement("li");
+                li.className = "time-item";
+                li.textContent = time;
+                list2.appendChild(li);
+            });
+        }
+        
+        // Функция для обновления даты и времени
+        function updateDateTime() {
+            const now = new Date();
+            const options = { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            };
+            document.getElementById('current-datetime').textContent = 
+                now.toLocaleDateString('ru-RU', options);
+        }
+        
+        // Инициализация при загрузке страницы
+        window.onload = function() {
+            displaySchedule();
+            updateNextBusesInfo();
+            updateDateTime();
+            
+            // Обновляем информацию каждую минуту
+            setInterval(updateNextBusesInfo, 60000);
+            // Обновляем время каждую секунду
+            setInterval(updateDateTime, 1000);
+        };
+    </script>
+</body>
+</html>

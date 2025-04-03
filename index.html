@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
     <meta charset="utf-8">
-    <title>Рыбалка: Тяглино, Черново, Сяберо</title>
+    <title>Рыбалка</title>
     <style>
         /* Общие стили */
         body {
@@ -148,6 +148,12 @@
             margin: 20px 0;
         }
 
+        .bus-schedule-column {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
         .time-list {
             list-style-type: none;
             padding: 0;
@@ -196,29 +202,45 @@
             background-color: #ffeb3b;
             font-weight: bold;
         }
+
+        .additional-schedule {
+            margin-top: 30px;
+        }
+
+        .additional-schedule h4 {
+            text-align: center;
+            font-size: 29px;
+            color: #3b027c;
+            margin-bottom: 10px;
+        }
+        .десятьдней {
+            font-size: 18px;
+            text-align: center;
+            margin: 20px;
+        }
     </style>
 </head>
 <body>
     <!-- Шапка сайта -->
     <header>
         <div class="datetime" id="current-datetime"></div>
-        <h1>Рыбалка в Тяглино, Черново и Сяберо</h1>
+        <h1>Рыбалка</h1>
     </header>
 
     <!-- Основной контент -->
     <main>
         <!-- Секция с тремя колонками -->
         <section id="places" class="columns">
-            <div class="column" id="tyaglino">
+            <div class="column" id="chernovo">
                 <h3>Черново</h3>
                 <p style="font-size:30px; text-align: center;">Расписание 540 автобуса</p>
                 
                 <div class="bus-schedule">
-                    <div>
+                    <div class="bus-schedule-column">
                         <div class="direction-title">На Учхоз</div>
                         <ul class="time-list" id="list1"></ul>
                     </div>
-                    <div>
+                    <div class="bus-schedule-column">
                         <div class="direction-title">На Войсковицы</div>
                         <ul class="time-list" id="list2"></ul>
                     </div>
@@ -226,17 +248,34 @@
                 
                 <!-- Ближайшие автобусы -->
                 <div class="next-buses-container" id="next-buses-info"></div>
+                
+                <!-- Дополнительное расписание -->
+                <div class="additional-schedule">
+                    <h4>Автобус 525 и 543</h4>
+                    <div class="bus-schedule">
+                        <div class="bus-schedule-column">
+                            <div class="direction-title">На Черново</div>
+                            <ul class="time-list" id="list3"></ul>
+                        </div>
+                        <div class="bus-schedule-column">
+                            <div class="direction-title">Из Черново</div>
+                            <ul class="time-list" id="list4"></ul>
+                        </div>
+                    </div>
+                </div>
             </div>
+            
             <div class="column" id="tyaglino">
                 <h3>Тяглино</h3>
                 <p style="font-size:30px; text-align: center;"> Погода</p>
+                <p class="десятьдней"><a href="https://www.gismeteo.ru/weather-chernovo-162711/10-days/" >Жми, чтобы узнать погоду на 10 дней</a></p>
                 <div id="_MI_e4742014fcacdef45be873b037cb4dee"><a href="https://ru.meteotrend.com/">Прогноз погоды</a></div> <script type='text/javascript'>(function(d,w,t,k){function l(){if(typeof(w._MIOB_)=='undefined'){w._MIOB_={};}var m=w._MIOB_[t]=k;var s=d.createElement('script');m.p=('https:'==d.location.protocol?'https:':'http:');s.type='text/javascript';s.async=true;s.src=m.p+'//info.meteotrend.com/mt/'+m.t+'.js';d.body.appendChild(s);}if(d.readyState=='complete')l();else{if(w.attachEvent)w.attachEvent('onload',l);else w.addEventListener('load',l,false);}})(document,window,'e4742014fcacdef45be873b037cb4dee',{t:'full5d',css:['{p}//info.meteotrend.com/mt/{t}.css','{p}//info.meteotrend.com/cs/04a7feaed88270d9fe7bd038d165f64931fcf838.css'],source:'meteotrend'});</script>
             </div>
             <div class="column" id="syabero">
                 <h3>Сяберо</h3>
                 <p style="font-size:30px; text-align: center;"> Погода в Осьмино</p>
+                <p class="десятьдней"><a href="https://www.gismeteo.ru/weather-syabero-163490/10-days/" >Жми, чтобы узнать точную погоду на Сяберо </a></p>
                 <div id="_MI_fe521a0233c3db44c96cb075d558eb89"><a href="https://ru.meteotrend.com/">Погода</a></div> <script type='text/javascript'>(function(d,w,t,k){function l(){if(typeof(w._MIOB_)=='undefined'){w._MIOB_={};}var m=w._MIOB_[t]=k;var s=d.createElement('script');m.p=('https:'==d.location.protocol?'https:':'http:');s.type='text/javascript';s.async=true;s.src=m.p+'//info.meteotrend.com/mt/'+m.t+'.js';d.body.appendChild(s);}if(d.readyState=='complete')l();else{if(w.attachEvent)w.attachEvent('onload',l);else w.addEventListener('load',l,false);}})(document,window,'fe521a0233c3db44c96cb075d558eb89',{t:'full5d',css:['{p}//info.meteotrend.com/mt/{t}.css','{p}//info.meteotrend.com/cs/b0b3758a56fe362fa74dce2869e3dad341139f15.css'],source:'meteotrend'});</script>
-                </div>
             </div>
         </section>
 
@@ -265,9 +304,13 @@
     </footer>
 
     <script>
-        // Расписания автобусов
+        // Основные расписания автобусов
         const scheduleToUchhoz = ["10:26", "12:24", "14:09", "15:51", "18:04"];
         const scheduleToVoiskovitsy = ["12:45", "14:25", "16:05", "18:20", "19:45"];
+        
+        // Дополнительные расписания
+        const scheduleRouteA = ["10:36","10:45","11:05","11:30","12:00","12:25", "12:50", "13:15", "13:40", "13:41", "14:10", "14:40", "15:10", "15:35", "16:00", "16:25", "16:41"];
+        const scheduleRouteB = ["15:12", "15:30", "15:37", "16:02", "16:27", "16:52", "17:10", "17:17", "17:32", "17:47", "18:02", "18:17", "18:25", "18:37", "18:57", "19:27", "19:52"];
         
         // Функция для преобразования времени в минуты
         function timeToMinutes(time) {
@@ -321,33 +364,45 @@
             
             const nextToUchhoz = findNextBus(scheduleToUchhoz, currentTime);
             const nextToVoiskovitsy = findNextBus(scheduleToVoiskovitsy, currentTime);
+            const nextRouteA = findNextBus(scheduleRouteA, currentTime);
+            const nextRouteB = findNextBus(scheduleRouteB, currentTime);
             
             const infoContainer = document.getElementById('next-buses-info');
             
             let infoHTML = `
-                <h4 style="text-align: center; margin-top: 0;">Ближайшие автобусы</h4>
+                <h4 style="text-align: center; margin-top: 0; font-size: 23px;">Ближайшие автобусы</h4>
                 <div class="next-bus">
-                    На Учхоз: ${nextToUchhoz.time} (через ${minutesToHoursMinutes(nextToUchhoz.minutesUntil)})
+                    Из Войсковиц: ${nextToUchhoz.time} (через ${minutesToHoursMinutes(nextToUchhoz.minutesUntil)})
                 </div>
                 <div class="next-bus">
                     На Войсковицы: ${nextToVoiskovitsy.time} (через ${minutesToHoursMinutes(nextToVoiskovitsy.minutesUntil)})
+                </div>
+                <div class="next-bus">
+                    На Черново: ${nextRouteA.time} (через ${minutesToHoursMinutes(nextRouteA.minutesUntil)})
+                </div>
+                <div class="next-bus">
+                    Из Черново: ${nextRouteB.time} (через ${minutesToHoursMinutes(nextRouteB.minutesUntil)})
                 </div>
             `;
             
             infoContainer.innerHTML = infoHTML;
             
             // Подсвечиваем ближайшие автобусы в расписании
-            highlightNextBuses(nextToUchhoz.index, nextToVoiskovitsy.index);
+            highlightNextBuses(nextToUchhoz.index, nextToVoiskovitsy.index, nextRouteA.index, nextRouteB.index);
         }
         
         // Функция для подсветки ближайших автобусов в расписании
-        function highlightNextBuses(uchhozIndex, voiskovitsyIndex) {
+        function highlightNextBuses(uchhozIndex, voiskovitsyIndex, routeAIndex, routeBIndex) {
             const uchhozItems = document.querySelectorAll('#list1 .time-item');
             const voiskovitsyItems = document.querySelectorAll('#list2 .time-item');
+            const routeAItems = document.querySelectorAll('#list3 .time-item');
+            const routeBItems = document.querySelectorAll('#list4 .time-item');
             
             // Снимаем подсветку со всех элементов
             uchhozItems.forEach(item => item.classList.remove('highlight'));
             voiskovitsyItems.forEach(item => item.classList.remove('highlight'));
+            routeAItems.forEach(item => item.classList.remove('highlight'));
+            routeBItems.forEach(item => item.classList.remove('highlight'));
             
             // Подсвечиваем ближайшие
             if (uchhozIndex >= 0 && uchhozIndex < uchhozItems.length) {
@@ -356,31 +411,35 @@
             if (voiskovitsyIndex >= 0 && voiskovitsyIndex < voiskovitsyItems.length) {
                 voiskovitsyItems[voiskovitsyIndex].classList.add('highlight');
             }
+            if (routeAIndex >= 0 && routeAIndex < routeAItems.length) {
+                routeAItems[routeAIndex].classList.add('highlight');
+            }
+            if (routeBIndex >= 0 && routeBIndex < routeBItems.length) {
+                routeBItems[routeBIndex].classList.add('highlight');
+            }
         }
         
-        // Функция для отображения расписания
-        function displaySchedule() {
-            const list1 = document.getElementById("list1");
-            const list2 = document.getElementById("list2");
+        // Функция для отображения всех расписаний
+        function displayAllSchedules() {
+            displaySchedule('#list1', scheduleToUchhoz);
+            displaySchedule('#list2', scheduleToVoiskovitsy);
+            displaySchedule('#list3', scheduleRouteA);
+            displaySchedule('#list4', scheduleRouteB);
+        }
+        
+        // Функция для отображения одного расписания
+        function displaySchedule(listId, schedule) {
+            const list = document.querySelector(listId);
             
-            // Очищаем списки
-            list1.innerHTML = '';
-            list2.innerHTML = '';
+            // Очищаем список
+            list.innerHTML = '';
             
-            // Заполняем список на Учхоз
-            scheduleToUchhoz.forEach(time => {
+            // Заполняем список
+            schedule.forEach(time => {
                 const li = document.createElement("li");
                 li.className = "time-item";
                 li.textContent = time;
-                list1.appendChild(li);
-            });
-            
-            // Заполняем список на Войсковицы
-            scheduleToVoiskovitsy.forEach(time => {
-                const li = document.createElement("li");
-                li.className = "time-item";
-                li.textContent = time;
-                list2.appendChild(li);
+                list.appendChild(li);
             });
         }
         
@@ -402,7 +461,7 @@
         
         // Инициализация при загрузке страницы
         window.onload = function() {
-            displaySchedule();
+            displayAllSchedules();
             updateNextBusesInfo();
             updateDateTime();
             
